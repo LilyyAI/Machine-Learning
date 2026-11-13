@@ -4,7 +4,7 @@ from pathlib import Path
 
 app = Flask(__name__)
 
-CODE_DIR = Path(__file__).parent
+CODE_DIR = Path(__file__).parent / "codes"
 
 EXPERIMENTS = {
     1: "experiment_01.py",
