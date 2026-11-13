@@ -1,10 +1,9 @@
-
 from flask import Flask, Response, abort
 from pathlib import Path
 
 app = Flask(__name__)
 
-CODE_DIR = Path(__file__).parent / "codes"
+BASE_DIR = Path(__file__).resolve().parent
 
 EXPERIMENTS = {
     1: "experiment_01.py",
@@ -29,12 +28,10 @@ def home():
 
 @app.route("/t/<int:number>")
 def get_experiment(number):
-    filename = EXPERIMENTS.get(number)
-
-    if filename is None:
+    if number not in EXPERIMENTS:
         abort(404)
 
-    file_path = CODE_DIR / filename
+    file_path = BASE_DIR / EXPERIMENTS[number]
 
     if not file_path.is_file():
         abort(404, "Experiment code is not uploaded yet.")
@@ -43,3 +40,6 @@ def get_experiment(number):
         file_path.read_text(encoding="utf-8"),
         mimetype="text/plain"
     )
+
+if __name__ == "__main__":
+    app.run()
